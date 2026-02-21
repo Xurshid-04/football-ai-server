@@ -13,6 +13,21 @@ app.get("/teams", async (req, res) => {
     const response = await fetch(`${BASE_URL}/competitions/PL/teams`, {
       headers: { "X-Auth-Token": API_KEY }
     });
+    app.get("/team/:id", async (req, res) => {
+  try {
+    const teamId = req.params.id;
+
+    const response = await fetch(`${BASE_URL}/teams/${teamId}`, {
+      headers: { "X-Auth-Token": API_KEY }
+    });
+
+    const data = await response.json();
+    res.json(data);
+
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching team data" });
+  }
+});
 
     const data = await response.json();
     res.json(data);
