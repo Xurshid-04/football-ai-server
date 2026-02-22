@@ -39,7 +39,25 @@ app.get("/team/:id", async (req, res) => {
     res.status(500).json({ error: "Error fetching team data" });
   }
 });
+// 🔥 Жамоанинг охирги 5 та ўйини
+app.get("/team/:id/matches", async (req, res) => {
+  try {
+    const teamId = req.params.id;
 
+    const response = await fetch(
+      `${BASE_URL}/teams/${teamId}/matches?limit=5`,
+      {
+        headers: { "X-Auth-Token": API_KEY }
+      }
+    );
+
+    const data = await response.json();
+    res.json(data);
+
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching matches" });
+  }
+});
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
