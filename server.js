@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
-const API_KEY = "SENING_API_KEYING"; // 🔥 Бу ерга ўзингни API key ни қўй
+const API_KEY = "SENING_API_KEYING"; // dae7faac7ba247ce873f16a220128f4c
 const BASE_URL = "https://api.football-data.org/v4";
 
 // 🔥 Барча жамоалар
