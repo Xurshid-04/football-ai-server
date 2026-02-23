@@ -63,3 +63,51 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// 🔥 AI Match Analyze
+app.get("/analyze/:homeId/:awayId", async (req, res) => {
+  try {
+    const { homeId, awayId } = req.params;
+
+    const homeResponse = await fetch(
+      `${BASE_URL}/teams/${homeId}/matches?status=FINISHED&limit=5`,
+      { headers: { "X-Auth-Token": API_KEY } }
+    );
+
+    const awayResponse = await fetch(
+      `${BASE_URL}/teams/${awayId}/matches?status=FINISHED&limit=5`,
+      { headers: { "X-Auth-Token": API_KEY } }
+    );
+
+    const homeData = await homeResponse.json();
+    const awayData = await awayResponse.json();
+
+    const homeGoals = homeData.matches.reduce(
+      (sum, match) => sum + match.score.fullTime.home,
+      0
+    );
+
+    const awayGoals = awayData.matches.reduce(
+      (sum, match) => sum + match.score.fullTime.away,
+      0
+    );
+
+    const avgHome = homeGoals / homeData.matches.length;
+    const avgAway = awayGoals / awayData.matches.length;
+
+    const prediction =
+      avgHome > avgAway
+        ? "Home Win"
+        : avgHome < avgAway
+        ? "Away Win"
+        : "Draw";
+
+    res.json({
+      avgHomeGoals: avgHome.toFixed(2),
+      avgAwayGoals: avgAway.toFixed(2),
+      prediction,
+      total: (avgHome + avgAway).toFixed(2),
+    });
+  } catch (error) {
+    res.status(500).json({ error: "AI analyze error" });
+  }
+});
