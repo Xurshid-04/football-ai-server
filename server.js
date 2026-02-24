@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 
 // 🔐 API калитингни шу ерга қўй
-const API_KEY = "API_KEY_НИ_ШУ_ЕРГА_ҚЎЙ";
+const API_KEY = "dae7faac7ba247ce873f16a220128f4c";
 const BASE_URL = "https://api.football-data.org/v4";
 
 
